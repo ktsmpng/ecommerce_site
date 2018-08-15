@@ -1,0 +1,51 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+  Your shopping cart
+{% endblock %}
+
+{% block content %}
+  <h1>Your shopping cart</h1>
+  <table class="cart panel-group table">
+    <div class="panel panel-default">
+    <thead class="panel-heading">
+      <tr>
+        <th class="panel-heading">Image</th>
+        <th class="panel-heading">Product</th>
+        <th class="panel-heading">Quantity</th>
+        <th class="panel-heading">Remove</th>
+        <th class="panel-heading">Unit price</th>                
+        <th class="panel-heading">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart %}
+        {% with product=item.product %}
+          <tr class="table-hover">
+            <td class="panel-heading">
+              <a href="{{ product.get_absolute_url }}">
+                <img style="width: 200px; height: 200px;" src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">                    
+              </a>
+            </td>
+            <td class="panel-heading">{{ product.name }}</td>
+            <td class="panel-heading">{{ item.quantity }}</td>
+            <td class="panel-heading"><a href="{% url "cart:cart_remove" product.id %}">Remove</a></td>
+            <td class="num panel-heading">${{ item.price }}</td>
+            <td class="num panel-heading">${{ item.total_price }}</td>
+          </tr>
+        {% endwith %}
+      {% endfor %}
+      <tr class="total panel-footer">
+        <td>Total</td>
+        <td colspan="4"></td>
+        <td class="num">${{ cart.get_total_price }}</td>
+      </tr>
+    </tbody>
+    </div>
+  </table>
+  <p class="text-right">
+    <div  class="btn btn-default"><a href="{% url "shop:product_list" %}">Continue shopping</a></div>
+    <div  class="btn btn-info"><a href="{% url "orders:order_create" %}">Checkout</a></div>
+  </p>
+{% endblock %}

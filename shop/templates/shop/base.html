@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Toats Ma Goats{% endblock %}</title>
+  <link href="{% static "css/base.css" %}" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a href="/" class="navbar-brand">Toats Ma Goats</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="active"><a href="#">Shop</a></li>
+      <li class="dropdown cart">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="badge">{% with total_items=cart|length %}{{ total_items }}{% endwith %}</span><i class="fa fa-shopping-cart" style="font-size:20px"></i>
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li>
+          {% with total_items=cart|length %}
+          {% if cart|length > 0 %}
+            <a href="{% url "cart:cart_detail" %}">
+              Your cart: 
+              {{ total_items }} item{{ total_items|pluralize }},
+              €{{ cart.get_total_price }}
+            </a>
+          {% else %}
+            Your cart is empty.
+          {% endif %}
+        {% endwith %}
+      </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  </nav>
+  {% block carousel %}
+  {% endblock %}
+  <div class="container" id="content">
+    {% block content %}
+    {% endblock %}
+  </div>
+  
+</body>
+</html>
